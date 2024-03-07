@@ -1,12 +1,12 @@
 import Background from "./components/Background";
 import Foreground from "./components/Foreground";
 import { nanoid } from "nanoid";
-import { useReducer, useEffect, useState } from "react";
+import { useReducer, useEffect } from "react";
 
 const ACTIONS = {
   ADD_TODO: "ADD_TODO",
   REMOVE_TODO: "REMOVE_TODO",
-  UPDATE_TODO: "UPDATE_TODO",
+  STATE_UPDATE: "STATE_UPDATE",
 };
 
 const dataArray = [
@@ -44,21 +44,24 @@ function reducer(state, action) {
       ];
     case ACTIONS.REMOVE_TODO:
       return state.filter((item) => item.id !== action.payload.id);
+    case ACTIONS.STATE_UPDATE:
+      return action.payload.todosArray;
+    default:
+      return state;
   }
 }
 
 function App() {
-  const [todos, setTodos] = useState(
-    () => JSON.parse(localStorage.getItem("todosArray")) || dataArray
-  );
   //Handler function for dispatching events
-  const [currArray, dispatch] = useReducer(reducer, todos);
+  const [currArray, dispatch] = useReducer(
+    reducer,
+    JSON.parse(localStorage.getItem("todosArray")) || dataArray
+  );
   function handleAddTodo(todoObject) {
     dispatch({
       type: ACTIONS.ADD_TODO,
       payload: { text: todoObject.text, date: todoObject.date },
     });
-    // setTodos(currArray);
   }
   function handleDelete(id) {
     dispatch({
@@ -71,9 +74,13 @@ function App() {
   useEffect(() => {
     const todosArray = JSON.parse(localStorage.getItem("todosArray"));
     if (todosArray && todosArray.length > 0) {
-      setTodos(todosArray);
+      dispatch({
+        type: ACTIONS.STATE_UPDATE,
+        payload: { todosArray },
+      });
     }
   }, []);
+
   useEffect(() => {
     localStorage.setItem("todosArray", JSON.stringify(currArray));
   }, [currArray]);
