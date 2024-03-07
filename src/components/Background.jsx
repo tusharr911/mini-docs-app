@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useRef } from "react";
-
-function Background({ handleAddTodo }) {
+import { useTodoContextHook } from "../../Store/Store";
+function Background() {
+  const { handleAddTodo } = useTodoContextHook();
   const todoTextRef = useRef("");
   const todoDateRef = useRef("");
   function handleAddBtn() {

@@ -5,9 +5,16 @@ import { MdOutlineCancel } from "react-icons/md";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import html2pdf from "html2pdf.js";
-
-function Card({ data, reference, handleDelete }) {
+import { useTodoContextHook } from "../../Store/Store";
+function Card({ data, reference }) {
   const [completed, setCompleted] = useState(data.completed);
+  const { handleDelete } = useTodoContextHook();
+  function handleCancelButton() {
+    handleDelete(data.id);
+  }
+  function updateCompleted() {
+    setCompleted(!completed);
+  }
 
   function handleDownload() {
     const contentToDownload = `
@@ -43,12 +50,6 @@ function Card({ data, reference, handleDelete }) {
         link.click();
         document.body.removeChild(link);
       });
-  }
-  function handleCancelButton() {
-    handleDelete(data.id);
-  }
-  function updateCompleted() {
-    setCompleted(!completed);
   }
 
   //   w-60 h-72
