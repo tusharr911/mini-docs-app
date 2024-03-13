@@ -11,9 +11,10 @@ export default function Foreground() {
       ref={ref}
       className="flex gap-5 flex-wrap p-5 fixed w-full h-full top-20 left-0 z-[3]"
     >
-      {currArray.map((item) => (
-        <Card reference={ref} data={item} key={item.id} />
-      ))}
+      {currArray.length > 0 &&
+        currArray.map(
+          (item) => item && <Card reference={ref} data={item} key={item.id} />
+        )}
     </div>
   );
 }

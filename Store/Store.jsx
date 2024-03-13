@@ -4,13 +4,17 @@ import { nanoid } from "nanoid";
 export const todoContext = createContext({
   currArray: [],
   handleAddTodo: () => {},
+  handleUpdate: () => {},
   handleDelete: () => {},
+  handleToggleComplete: () => {},
 });
 
 const ACTIONS = {
   ADD_TODO: "ADD_TODO",
   REMOVE_TODO: "REMOVE_TODO",
   STATE_UPDATE: "STATE_UPDATE",
+  UPDATE_TODO: "UPDATE_TODO",
+  TOGGLE_COMPLETE: "TOGGLE_COMPLETE",
 };
 
 const dataArray = [
@@ -50,6 +54,18 @@ function reducer(state, action) {
       return state.filter((item) => item.id !== action.payload.id);
     case ACTIONS.STATE_UPDATE:
       return action.payload.todosArray;
+    case ACTIONS.UPDATE_TODO:
+      return state.map((item) =>
+        item.id === action.payload.id
+          ? { ...item, desc: action.payload.todoText }
+          : item
+      );
+    case ACTIONS.TOGGLE_COMPLETE:
+      return state.map((item) =>
+        item.id === action.payload.id
+          ? { ...item, completed: !item.completed }
+          : item
+      );
     default:
       return state;
   }
@@ -60,7 +76,7 @@ export const TodoContextProvider = ({ children }) => {
   //Handler function for dispatching events
   const [currArray, dispatch] = useReducer(
     reducer,
-    JSON.parse(localStorage.getItem("todosArray")) || dataArray
+    JSON.parse(localStorage.getItem("todosArray")) || dataArray || []
   );
   function handleAddTodo(todoObject) {
     dispatch({
@@ -74,7 +90,22 @@ export const TodoContextProvider = ({ children }) => {
       payload: { id },
     });
   }
-
+  function handleUpdate(id, todoText) {
+    if (id.length > 0 && todoText.length > 0) {
+      dispatch({
+        type: ACTIONS.UPDATE_TODO,
+        payload: { id, todoText },
+      });
+    }
+  }
+  function handleToggleComplete(id) {
+    if (id.length > 0) {
+      dispatch({
+        type: ACTIONS.TOGGLE_COMPLETE,
+        payload: { id },
+      });
+    }
+  }
   //Effects for localStorage
   useEffect(() => {
     const todosArray = JSON.parse(localStorage.getItem("todosArray"));
@@ -92,7 +123,13 @@ export const TodoContextProvider = ({ children }) => {
 
   return (
     <todoContext.Provider
-      value={{  handleAddTodo, handleDelete, currArray }}
+      value={{
+        handleAddTodo,
+        handleDelete,
+        currArray,
+        handleUpdate,
+        handleToggleComplete,
+      }}
     >
       {children}
     </todoContext.Provider>
