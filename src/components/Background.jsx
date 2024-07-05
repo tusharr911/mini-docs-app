@@ -1,16 +1,26 @@
 /* eslint-disable react/prop-types */
 import { useRef } from "react";
-import { useTodoContextHook } from "../../Store/Store";
+import { useDispatch } from "react-redux";
+import { handleAddTodo } from "../../Store/TodoSlice";
 function Background() {
-  const { handleAddTodo } = useTodoContextHook();
+  const dispatch = useDispatch();
   const todoTextRef = useRef("");
   const todoDateRef = useRef("");
-  function handleAddBtn() {
+
+  function handleAddBtn(event) {
+    event.preventDefault();
+    event.currentTarget.blur();
+
     if (!todoTextRef.current.value || !todoDateRef.current.value) return;
-    handleAddTodo({
-      text: todoTextRef.current.value,
-      date: todoDateRef.current.value,
-    });
+    
+    dispatch(
+      handleAddTodo({
+        text: todoTextRef.current.value,
+        date: todoDateRef.current.value,
+      })
+    );
+    todoTextRef.current.value = "";
+    todoDateRef.current.value = "";
   }
   return (
     <>
@@ -32,7 +42,7 @@ function Background() {
             <button
               className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded transition-all	"
               type="button"
-              onClick={handleAddBtn}
+              onClick={() => handleAddBtn(event)}
             >
               Add Todo
             </button>

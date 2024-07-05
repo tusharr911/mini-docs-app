@@ -1,141 +1,148 @@
-import { useContext, createContext, useReducer, useEffect } from "react";
-import { nanoid } from "nanoid";
+// use Reducer and Context API
 
-export const todoContext = createContext({
-  currArray: [],
-  handleAddTodo: () => {},
-  handleUpdate: () => {},
-  handleDelete: () => {},
-  handleToggleComplete: () => {},
-});
+//Shifted to Redux Toolkit so now use ReduxStore.js and TodoSlice.js
 
-const ACTIONS = {
-  ADD_TODO: "ADD_TODO",
-  REMOVE_TODO: "REMOVE_TODO",
-  STATE_UPDATE: "STATE_UPDATE",
-  UPDATE_TODO: "UPDATE_TODO",
-  TOGGLE_COMPLETE: "TOGGLE_COMPLETE",
-};
+// import { useContext, createContext, useReducer, useEffect } from "react";
+// import { nanoid } from "nanoid";
 
-const dataArray = [
-  {
-    id: nanoid(),
-    desc: "Buy some groceries",
-    date: "2024-02-15",
-    completed: false,
-    tagTitle: "Mark as Completed",
-  },
+// export const todoContext = createContext({
+//   currArray: [],
+//   handleAddTodo: () => {},
+//   handleUpdate: () => {},
+//   handleDelete: () => {},
+//   handleToggleComplete: () => {},
+// });
 
-  {
-    id: nanoid(),
-    desc: "Water the plants",
-    date: "2024-01-08",
-    completed: false,
-    tagTitle: "Mark as Completed",
-  },
-];
+// const ACTIONS = {
+//   ADD_TODO: "ADD_TODO",
+//   REMOVE_TODO: "REMOVE_TODO",
+//   STATE_UPDATE: "STATE_UPDATE",
+//   UPDATE_TODO: "UPDATE_TODO",
+//   TOGGLE_COMPLETE: "TOGGLE_COMPLETE",
+// };
 
-//Actual reducer function with functionality
+// const dataArray = [
+//   {
+//     id: nanoid(),
+//     desc: "Buy some groceries",
+//     date: "2024-02-15",
+//     completed: false,
+//     tagTitle: "Mark as Completed",
+//   },
 
-function reducer(state, action) {
-  switch (action.type) {
-    case ACTIONS.ADD_TODO:
-      return [
-        ...state,
-        {
-          id: nanoid(),
-          desc: action.payload.text,
-          date: action.payload.date,
-          completed: false,
-          tagTitle: "Mark as Completed",
-        },
-      ];
-    case ACTIONS.REMOVE_TODO:
-      return state.filter((item) => item.id !== action.payload.id);
-    case ACTIONS.STATE_UPDATE:
-      return action.payload.todosArray;
-    case ACTIONS.UPDATE_TODO:
-      return state.map((item) =>
-        item.id === action.payload.id
-          ? { ...item, desc: action.payload.todoText }
-          : item
-      );
-    case ACTIONS.TOGGLE_COMPLETE:
-      return state.map((item) =>
-        item.id === action.payload.id
-          ? { ...item, completed: !item.completed }
-          : item
-      );
-    default:
-      return state;
-  }
-}
+//   {
+//     id: nanoid(),
+//     desc: "Water the plants",
+//     date: "2024-01-08",
+//     completed: false,
+//     tagTitle: "Mark as Completed",
+//   },
+// ];
 
-// eslint-disable-next-line react/prop-types
-export const TodoContextProvider = ({ children }) => {
-  //Handler function for dispatching events
-  const [currArray, dispatch] = useReducer(
-    reducer,
-    JSON.parse(localStorage.getItem("todosArray")) || dataArray || []
-  );
-  function handleAddTodo(todoObject) {
-    dispatch({
-      type: ACTIONS.ADD_TODO,
-      payload: { text: todoObject.text, date: todoObject.date },
-    });
-  }
-  function handleDelete(id) {
-    dispatch({
-      type: ACTIONS.REMOVE_TODO,
-      payload: { id },
-    });
-  }
-  function handleUpdate(id, todoText) {
-    if (id.length > 0 && todoText.length > 0) {
-      dispatch({
-        type: ACTIONS.UPDATE_TODO,
-        payload: { id, todoText },
-      });
-    }
-  }
-  function handleToggleComplete(id) {
-    if (id.length > 0) {
-      dispatch({
-        type: ACTIONS.TOGGLE_COMPLETE,
-        payload: { id },
-      });
-    }
-  }
-  //Effects for localStorage
-  useEffect(() => {
-    const todosArray = JSON.parse(localStorage.getItem("todosArray"));
-    if (todosArray && todosArray.length > 0) {
-      dispatch({
-        type: ACTIONS.STATE_UPDATE,
-        payload: { todosArray },
-      });
-    }
-  }, []);
+// //Actual reducer function with functionality
 
-  useEffect(() => {
-    localStorage.setItem("todosArray", JSON.stringify(currArray));
-  }, [currArray]);
+// function reducer(state, action) {
+//   switch (action.type) {
+//     case ACTIONS.ADD_TODO:
 
-  return (
-    <todoContext.Provider
-      value={{
-        handleAddTodo,
-        handleDelete,
-        currArray,
-        handleUpdate,
-        handleToggleComplete,
-      }}
-    >
-      {children}
-    </todoContext.Provider>
-  );
-};
+//       return [
+//         ...state,
+//         {
+//           id: nanoid(),
+//           desc: action.payload.text,
+//           date: action.payload.date,
+//           completed: false,
+//           tagTitle: "Mark as Completed",
+//         },
+//       ];
+//     case ACTIONS.REMOVE_TODO:
+//       return state.filter((item) => item.id !== action.payload.id);
+//     case ACTIONS.STATE_UPDATE:
+//       return action.payload.todosArray;
+//     case ACTIONS.UPDATE_TODO:
+//       return state.map((item) =>
+//         item.id === action.payload.id
+//           ? { ...item, desc: action.payload.todoText }
+//           : item
+//       );
+//     case ACTIONS.TOGGLE_COMPLETE:
+//       return state.map((item) =>
+//         item.id === action.payload.id
+//           ? { ...item, completed: !item.completed }
+//           : item
+//       );
+//     default:
+//       return state;
+//   }
+// }
 
-export const useTodoContextHook = () => {
-  return useContext(todoContext);
-};
+// // eslint-disable-next-line react/prop-types
+// export const TodoContextProvider = ({ children }) => {
+//   //Handler function for dispatching events
+//   const [currArray, dispatch] = useReducer(
+//     reducer,
+//     JSON.parse(localStorage.getItem("todosArray")) || dataArray || []
+//   );
+//   function handleAddTodo(todoObject) {
+
+//     dispatch({
+//       type: ACTIONS.ADD_TODO,
+//       payload: { text: todoObject.text, date: todoObject.date },
+//     });
+//   }
+//   function handleDelete(id) {
+//     dispatch({
+//       type: ACTIONS.REMOVE_TODO,
+//       payload: { id },
+//     });
+//   }
+//   function handleUpdate(id, todoText) {
+//     if (id.length > 0 && todoText.length > 0) {
+//       dispatch({
+//         type: ACTIONS.UPDATE_TODO,
+//         payload: { id, todoText },
+//       });
+//     }
+//   }
+//   function handleToggleComplete(id) {
+//     if (id.length > 0) {
+//       dispatch({
+//         type: ACTIONS.TOGGLE_COMPLETE,
+//         payload: { id },
+//       });
+//     }
+//   }
+//   //Effects for localStorage
+//   useEffect(() => {
+//     const todosArray = JSON.parse(localStorage.getItem("todosArray"));
+
+//     if (todosArray && todosArray.length > 0) {
+//       dispatch({
+//         type: ACTIONS.STATE_UPDATE,
+//         payload: { todosArray },
+//       });
+//     }
+//   }, []);
+
+//   useEffect(() => {
+//     localStorage.setItem("todosArray", JSON.stringify(currArray));
+//   }, [currArray]);
+
+//   return (
+//     <todoContext.Provider
+//       value={{
+//         handleAddTodo,
+//         handleDelete,
+//         currArray,
+//         handleUpdate,
+//         handleToggleComplete,
+//       }}
+//     >
+//       {children}
+//     </todoContext.Provider>
+//   );
+// };
+
+// export const useTodoContextHook = () => {
+//   return useContext(todoContext);
+// };

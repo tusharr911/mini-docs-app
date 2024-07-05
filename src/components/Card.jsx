@@ -6,28 +6,32 @@ import { RiSave2Line } from "react-icons/ri";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import html2pdf from "html2pdf.js";
-import { useTodoContextHook } from "../../Store/Store";
+import {
+  handleDelete,
+  handleUpdate,
+  handleToggleComplete,
+} from "../../Store/TodoSlice";
+import { useDispatch } from "react-redux";
+
 function Card({ data, reference }) {
+  const dispatch = useDispatch();
   const [isTodoEditable, setIsTodoEditable] = useState(false);
 
   const [todoText, setTodoText] = useState(data.desc);
 
-  const { handleDelete, handleUpdate, handleToggleComplete } =
-    useTodoContextHook();
-  function handleCancelButton() {
-    handleDelete(data.id);
+  function handleCancelButton(id) {
+    dispatch(handleDelete({ id }));
   }
-  function toggleCompleted() {
-    handleToggleComplete(data.id);
+  function toggleCompleted(id) {
+    dispatch(handleToggleComplete({ id }));
   }
   function updatingTodoCallback(event) {
     setTodoText(event.target.value);
   }
-  function saveChange() {
-    const todoId = data.id;
+  function saveChange(id) {
     const trimmedText = todoText.trim();
     if (trimmedText !== "") {
-      handleUpdate(todoId, trimmedText);
+      dispatch(handleUpdate({ id, trimmedText }));
     }
     setIsTodoEditable(false);
   }
@@ -91,14 +95,14 @@ function Card({ data, reference }) {
           onClick={() => !data.completed && setIsTodoEditable(!isTodoEditable)}
         >
           {isTodoEditable ? (
-            <RiSave2Line onClick={saveChange} />
+            <RiSave2Line onClick={() => saveChange(data.id)} />
           ) : (
             <FaRegEdit />
           )}
         </span>
         <MdOutlineCancel
           className="text-xl cursor-pointer"
-          onClick={handleCancelButton}
+          onClick={() => handleCancelButton(data.id)}
         />
       </div>
 
@@ -127,7 +131,7 @@ function Card({ data, reference }) {
         <div className={`tag w-full pb-5  flex  justify-center items-center`}>
           <h3
             className="text-sm font-semibold cursor-pointer "
-            onClick={toggleCompleted}
+            onClick={() => toggleCompleted(data.id)}
           >
             {data.completed ? "Completed" : data.tagTitle}
           </h3>

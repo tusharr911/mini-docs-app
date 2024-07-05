@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import Card from "./Card";
 import { useRef } from "react";
-import { useTodoContextHook } from "../../Store/Store";
+
+import { useSelector } from "react-redux";
 export default function Foreground() {
-  const { currArray } = useTodoContextHook();
+  const currArray = useSelector((state) => state.todoArrayInitial);
   const ref = useRef(null);
 
   return (
