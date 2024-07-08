@@ -3,8 +3,9 @@ import Card from "./Card";
 import { useRef } from "react";
 
 import { useSelector } from "react-redux";
+import { TodoSliceSelector } from "../../Store/TodoSlice";
 export default function Foreground() {
-  const currArray = useSelector((state) => state.todoArrayInitial);
+  const currArray = useSelector(TodoSliceSelector);
   const ref = useRef(null);
 
   return (

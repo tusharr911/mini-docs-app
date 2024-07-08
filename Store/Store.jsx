@@ -26,7 +26,7 @@
 //     id: nanoid(),
 //     desc: "Buy some groceries",
 //     date: "2024-02-15",
-//     completed: false,
+//     completedStatus: false,
 //     tagTitle: "Mark as Completed",
 //   },
 
@@ -34,7 +34,7 @@
 //     id: nanoid(),
 //     desc: "Water the plants",
 //     date: "2024-01-08",
-//     completed: false,
+//     completedStatus: false,
 //     tagTitle: "Mark as Completed",
 //   },
 // ];
@@ -51,7 +51,7 @@
 //           id: nanoid(),
 //           desc: action.payload.text,
 //           date: action.payload.date,
-//           completed: false,
+//           completedStatus: false,
 //           tagTitle: "Mark as Completed",
 //         },
 //       ];
@@ -68,7 +68,7 @@
 //     case ACTIONS.TOGGLE_COMPLETE:
 //       return state.map((item) =>
 //         item.id === action.payload.id
-//           ? { ...item, completed: !item.completed }
+//           ? { ...item, completedStatus: !item.completedStatus }
 //           : item
 //       );
 //     default:

@@ -42,7 +42,7 @@ function Card({ data, reference }) {
             <p><strong>Description:</strong> ${data.desc}</p>
             <p><strong>Due Date:</strong> ${data.date}</p>
             <p><strong>Completed status:</strong> ${
-              data.completed ? "Completed" : "Not Yet"
+              data.completedStatus ? "Completed" : "Not Yet"
             }</p>
             <p>${"‎ "}</p>
         </div>
@@ -84,7 +84,7 @@ function Card({ data, reference }) {
       dragElastic={0.5}
       dragTransition={{ bounceStiffness: 200, bounceDamping: 30 }}
       className={`flex-shrink-0 relative w-56 h-72 rounded-[45px] text-white py-8 px-8 overflow-hidden ${
-        data.completed
+        data.completedStatus
           ? "bg-green-400 bg-opacity-60"
           : "bg-zinc-900 bg-opacity-90"
       }`}
@@ -92,7 +92,9 @@ function Card({ data, reference }) {
       <div className="flex justify-between items-center">
         <span
           className="cursor-pointer"
-          onClick={() => !data.completed && setIsTodoEditable(!isTodoEditable)}
+          onClick={() =>
+            !data.completedStatus && setIsTodoEditable(!isTodoEditable)
+          }
         >
           {isTodoEditable ? (
             <RiSave2Line onClick={() => saveChange(data.id)} />
@@ -133,7 +135,7 @@ function Card({ data, reference }) {
             className="text-sm font-semibold cursor-pointer "
             onClick={() => toggleCompleted(data.id)}
           >
-            {data.completed ? "Completed" : data.tagTitle}
+            {data.completedStatus ? "Completed" : data.tagTitle}
           </h3>
         </div>
       </div>

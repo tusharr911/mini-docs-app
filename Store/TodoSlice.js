@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createSlice, nanoid, createSelector } from "@reduxjs/toolkit";
 import { initialState, tagTitleDefault } from "../src/lib/constants";
 const TodoSlice = createSlice({
   name: "todo",
@@ -12,7 +12,7 @@ const TodoSlice = createSlice({
         id: nanoid(),
         desc: action.payload.text,
         date: action.payload.date,
-        completed: false,
+        completedStatus: false,
         tagTitle: tagTitleDefault,
       };
       state.todoArrayInitial.push(todo);
@@ -32,12 +32,18 @@ const TodoSlice = createSlice({
     handleToggleComplete: (state, action) => {
       state.todoArrayInitial = state.todoArrayInitial.map((item) =>
         item.id === action.payload.id
-          ? { ...item, completed: !item.completed }
+          ? { ...item, completedStatus: !item.completedStatus }
           : item
       );
     },
   },
 });
+
+/* Selector function to get the data from Slice */
+export const TodoSliceSelector = createSelector(
+  (state) => state.todo,
+  (todoSlice) => todoSlice.todoArrayInitial
+);
 
 export default TodoSlice.reducer;
 
