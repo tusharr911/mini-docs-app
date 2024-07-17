@@ -24,7 +24,7 @@
 // const dataArray = [
 //   {
 //     id: nanoid(),
-//     desc: "Buy some groceries",
+//     text: "Buy some groceries",
 //     date: "2024-02-15",
 //     completedStatus: false,
 //     tagTitle: "Mark as Completed",
@@ -32,7 +32,7 @@
 
 //   {
 //     id: nanoid(),
-//     desc: "Water the plants",
+//     text: "Water the plants",
 //     date: "2024-01-08",
 //     completedStatus: false,
 //     tagTitle: "Mark as Completed",
@@ -49,7 +49,7 @@
 //         ...state,
 //         {
 //           id: nanoid(),
-//           desc: action.payload.text,
+//           text: action.payload.text,
 //           date: action.payload.date,
 //           completedStatus: false,
 //           tagTitle: "Mark as Completed",
@@ -62,7 +62,7 @@
 //     case ACTIONS.UPDATE_TODO:
 //       return state.map((item) =>
 //         item.id === action.payload.id
-//           ? { ...item, desc: action.payload.todoText }
+//           ? { ...item, text: action.payload.todoText }
 //           : item
 //       );
 //     case ACTIONS.TOGGLE_COMPLETE:

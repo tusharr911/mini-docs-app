@@ -14,25 +14,26 @@ export class Service {
     this.databases = new Databases(this.client);
     this.bucket = new Storage(this.client);
   }
-  async createPost({ desc, slug, date, completedStatus, userId }) {
+  async createPost({ text, slug, date, completedStatus, userId }) {
+    console.log("createPost", { text, slug, date, completedStatus, userId });
     try {
       return await this.databases.createDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug,
-        { desc, date, completedStatus, userId }
+        { text, date, completedStatus, userId }
       );
     } catch (error) {
       console.log("Appwrite Service Error:: createPost", error);
     }
   }
-  async updatePost(slug, { desc, date, completedStatus }) {
+  async updatePost(slug, { text, date, completedStatus }) {
     try {
       return await this.databases.updateDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug,
-        { desc, date, completedStatus }
+        { text, date, completedStatus }
       );
     } catch (error) {
       console.log("Appwrite Service Error:: updatePost", error);
@@ -62,7 +63,8 @@ export class Service {
       console.log("Appwrite Service Error:: getPost", error);
     }
   }
-  async getPosts(queries = [Query.equal("completedStatus", "true")]) {
+  async getPosts(userId) {
+    const queries = [Query.equal("userId", userId)];
     try {
       return await this.databases.listDocuments(
         conf.appwriteDatabaseId,

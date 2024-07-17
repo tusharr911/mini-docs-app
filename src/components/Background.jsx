@@ -1,53 +1,26 @@
-/* eslint-disable react/prop-types */
-import { useRef } from "react";
+import CreatePost from "./CreatePost";
+import { Button } from "./Index";
+import authService from "../appwrite/auth";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { handleAddTodo } from "../../Store/TodoSlice";
+import { logout } from "../../Store/authSlice";
 function Background() {
   const dispatch = useDispatch();
-  const todoTextRef = useRef("");
-  const todoDateRef = useRef("");
-
-  function handleAddBtn(event) {
-    event.preventDefault();
-    event.currentTarget.blur();
-
-    if (!todoTextRef.current.value || !todoDateRef.current.value) return;
-    
-    dispatch(
-      handleAddTodo({
-        text: todoTextRef.current.value,
-        date: todoDateRef.current.value,
-      })
-    );
-    todoTextRef.current.value = "";
-    todoDateRef.current.value = "";
-  }
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await authService.logout();
+    dispatch(logout());
+    navigate("/");
+  };
   return (
     <>
       <header className="h-20 w-full text-zinc-600 ">
-        <form className="w-full max-w-md mx-auto py-4">
-          <div className="flex items-center border-b border-teal-500 py-2 gap-4">
-            <input
-              className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
-              type="text"
-              placeholder="What are you upto?"
-              aria-label="Full name"
-              ref={todoTextRef}
-            />
-            <input
-              type="date"
-              className="flex-shrink-0 border-transparent border-4 text-white border-teal-500 hover:border-teal-700 text-sm py-1 px-2 rounded bg-teal-500 hover:bg-teal-700 transition-all"
-              ref={todoDateRef}
-            />
-            <button
-              className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded transition-all	"
-              type="button"
-              onClick={() => handleAddBtn(event)}
-            >
-              Add Todo
-            </button>
-          </div>
-        </form>
+        <div className="w-full max-w-md mx-auto py-4 flex gap-10">
+          <CreatePost />
+          <Button className="" onClick={handleLogout}>
+            Logout
+          </Button>
+        </div>
       </header>
 
       <div className="fixed w-full h-screen z-[2]">
