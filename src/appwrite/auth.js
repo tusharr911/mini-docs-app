@@ -33,7 +33,15 @@ export class AuthService {
 
   async loginAccount({ email, password }) {
     try {
-      return await this.account.createEmailPasswordSession(email, password);
+      const userAccount = await this.account.createEmailPasswordSession(
+        email,
+        password
+      );
+      if (userAccount) {
+        const JWT = await this.account.createJWT();
+        console.log(JWT);
+        return userAccount;
+      }
     } catch (error) {
       console.log("Appwrite Service Error:: loginAccount", error);
     }

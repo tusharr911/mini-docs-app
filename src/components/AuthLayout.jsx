@@ -1,19 +1,11 @@
-import { useNavigate } from "react-router-dom";
+// src/components/PrivateRoute.jsx
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import AuthSliceSelector from "../../Store/authSlice";
+import { Navigate } from "react-router-dom";
+import { AuthSliceSelector } from "../../Store/authSlice";
+const AuthLayout = ({ children }) => {
+  const { status } = useSelector(AuthSliceSelector);
 
-export default function AuthLayout({ children, authentication = true }) {
-  const navigate = useNavigate();
-  const { status: authStatus } = useSelector(AuthSliceSelector);
+  return status ? children : <Navigate to="/login" />;
+};
 
-  useEffect(() => {
-    if (authentication && authStatus !== authentication) {
-      navigate("/login");
-    } else if (!authentication && authStatus !== authentication) {
-      navigate("/notes");
-    }
-  }, [authStatus, authentication, navigate]);
-
-  return <>{children}</>;
-}
+export default AuthLayout;
