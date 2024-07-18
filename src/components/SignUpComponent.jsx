@@ -5,12 +5,8 @@ import authService from "../appwrite/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { login as authLogin } from "../../Store/authSlice";
 import { useDispatch } from "react-redux";
-import { AuthSliceSelector } from "../../Store/authSlice";
-import { useSelector } from "react-redux";
 
 function SignUpComponent() {
-  const { state, userData } = useSelector(AuthSliceSelector);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -26,7 +22,6 @@ function SignUpComponent() {
       if (session) {
         const userData = await authService.getCurrentUser();
         if (userData) {
-          console.log(userData);
           dispatch(authLogin({ userData }));
           navigate("/notes");
         }

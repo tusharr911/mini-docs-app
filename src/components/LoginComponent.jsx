@@ -22,14 +22,15 @@ function LoginComponent() {
 
   const login = async (data) => {
     const prevUserData = await authService.getCurrentUser();
-    prevUserData && authService.logout();
+    if (prevUserData) {
+      await authService.logout();
+    }
     try {
       const session = await authService.loginAccount(data);
       if (session) {
         const userData = await authService.getCurrentUser();
         if (userData) {
           dispatch(authLogin({ userData }));
-
           navigate("/notes");
         }
       }

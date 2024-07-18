@@ -8,8 +8,9 @@ const TodoSlice = createSlice({
       state.todoArrayInitial = action.payload.todoArray;
     },
     handleAddTodo: (state, action) => {
+      
       const todo = {
-        id: action.payload.slug,
+        $id: action.payload.$id,
         text: action.payload.text,
         date: action.payload.date,
         completedStatus: action.payload.completedStatus,

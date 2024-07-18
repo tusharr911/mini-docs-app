@@ -14,7 +14,6 @@ function App() {
   useEffect(() => {
     async function logoutSession() {
       if (location.pathname !== "/notes") {
-        console.log("logoutSession");
         await authService.logout();
         dispatch(logout());
         dispatch(initializeTodos({ todoArray: [] }));

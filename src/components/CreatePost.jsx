@@ -13,8 +13,6 @@ function CreatePost() {
   const { register, handleSubmit, reset } = useForm();
 
   async function addTodo(data) {
-    console.log("Data from add form", data);
-    //  Code to push newly created Post to appwrite
 
     try {
       const response = await service.createPost({
@@ -26,7 +24,7 @@ function CreatePost() {
       });
 
       if (response) {
-        console.log("response after submitting appwrite", response);
+        
         dispatch(handleAddTodo(response));
       }
     } catch (error) {
