@@ -1,18 +1,16 @@
 /* eslint-disable no-unused-vars */
 
 import { Link, useNavigate } from "react-router-dom";
-import { Input, Button, Logo } from "./Index";
+import { Button, Loader } from "./Index";
 import { useDispatch } from "react-redux";
 import { login as authLogin } from "../../Store/authSlice";
 import authService from "../appwrite/auth";
 import { useForm } from "react-hook-form";
-import { AuthSliceSelector } from "../../Store/authSlice";
-import { useSelector } from "react-redux";
-
+import { useState } from "react";
 function LoginComponent() {
-  const { state, userData } = useSelector(AuthSliceSelector);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -21,6 +19,7 @@ function LoginComponent() {
   } = useForm();
 
   const login = async (data) => {
+    setLoading(true);
     const prevUserData = await authService.getCurrentUser();
     if (prevUserData) {
       await authService.logout();
@@ -38,7 +37,11 @@ function LoginComponent() {
       console.log(error.message);
     }
     reset();
+    setLoading(false);
   };
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="relative flex flex-col text-gray-700 bg-transparent shadow-md rounded-xl bg-clip-border bg-white px-8 pt-6 pb-8 mb-4">
       <h4 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">

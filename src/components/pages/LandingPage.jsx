@@ -11,11 +11,11 @@ function LandingPage() {
         </h1>
 
         <div className="absolute top-1/2 left-1/2 -translate-x-[50%] translate-y-[100%] flex justify-center items-center gap-20 ">
-          <Button className="btn" onClick={() => navigate("/login")}>
-            Login
-          </Button>
-          <Button className="btn" onClick={() => navigate("/signup")}>
-            Sign Up
+          <Button
+            onClick={() => navigate("/login")}
+            className="animated-button"
+          >
+            SIGN IN
           </Button>
         </div>
       </div>

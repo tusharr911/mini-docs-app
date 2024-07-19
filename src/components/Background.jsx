@@ -1,12 +1,14 @@
 import CreatePost from "./CreatePost";
-import { Button } from "./Index";
+import { Button, Loader } from "./Index";
 import authService from "../appwrite/auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../Store/authSlice";
+import { useState } from "react";
 function Background() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const handleLogout = async () => {
     await authService.logout();
     dispatch(logout());
@@ -14,10 +16,14 @@ function Background() {
   };
   return (
     <>
-      <header className="h-20 w-full text-zinc-600 ">
-        <div className="w-full max-w-md mx-auto py-4 flex gap-10">
-          <CreatePost />
-          <Button className="" onClick={handleLogout}>
+      <header className="h-20 w-full text-zinc-600 flex ">
+        {loading && <Loader />}
+        <div className="w-full max-w-xl mx-auto py-4 flex gap-6">
+          <CreatePost setLoading={setLoading} />
+          <Button
+            className="animated-button flex items-center justify-center"
+            onClick={handleLogout}
+          >
             Logout
           </Button>
         </div>

@@ -38,8 +38,8 @@ export class AuthService {
         password
       );
       if (userAccount) {
-        const JWT = await this.account.createJWT();
-        console.log(JWT);
+        // const JWT = await this.account.createJWT();
+        // console.log(JWT);
         return userAccount;
       }
     } catch (error) {

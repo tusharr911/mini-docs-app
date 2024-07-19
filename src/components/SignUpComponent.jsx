@@ -1,14 +1,15 @@
 /* eslint-disable no-unused-vars */
-import { Input, Button } from "./Index";
+import { Input, Button, Loader } from "./Index";
 import { useForm } from "react-hook-form";
 import authService from "../appwrite/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { login as authLogin } from "../../Store/authSlice";
 import { useDispatch } from "react-redux";
-
+import { useState } from "react";
 function SignUpComponent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -17,6 +18,7 @@ function SignUpComponent() {
     getValues,
   } = useForm();
   const signUp = async (data) => {
+    setLoading(true);
     try {
       const session = await authService.createAccount(data);
       if (session) {
@@ -30,7 +32,11 @@ function SignUpComponent() {
       console.log(error.message);
     }
     reset();
+    setLoading(false);
   };
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="relative flex flex-col text-gray-700 bg-transparent shadow-md rounded-xl bg-clip-border bg-white px-8 pt-6 pb-8 mb-4">
       <h4 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">

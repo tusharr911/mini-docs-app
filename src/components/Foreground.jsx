@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import Card from "./Card";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TodoSliceSelector } from "../../Store/TodoSlice";
 import service from "../appwrite/config";
@@ -11,7 +11,7 @@ import authService from "../appwrite/auth";
 export default function Foreground() {
   const { userData } = useSelector(AuthSliceSelector);
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     async function fetchDataFromAppWrite() {
       try {

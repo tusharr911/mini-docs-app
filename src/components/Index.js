@@ -15,6 +15,7 @@ import SignUp from "./pages/SignUp";
 import Layout from "./Layout";
 import AuthLayout from "./AuthLayout";
 import AnimatedPages from "./pages/AnimatedPages";
+import Loader from "./Loader";
 export {
   Header,
   Footer,
@@ -33,4 +34,5 @@ export {
   Layout,
   AuthLayout,
   AnimatedPages,
+  Loader,
 };

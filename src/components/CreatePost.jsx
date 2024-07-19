@@ -6,14 +6,14 @@ import service from "../appwrite/config";
 import { nanoid } from "nanoid";
 import { useSelector } from "react-redux";
 import { AuthSliceSelector } from "../../Store/authSlice";
-function CreatePost() {
+function CreatePost({ setLoading }) {
   const { userData } = useSelector(AuthSliceSelector);
 
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
 
   async function addTodo(data) {
-
+    setLoading(true);
     try {
       const response = await service.createPost({
         text: data.text,
@@ -24,7 +24,6 @@ function CreatePost() {
       });
 
       if (response) {
-        
         dispatch(handleAddTodo(response));
       }
     } catch (error) {
@@ -32,6 +31,7 @@ function CreatePost() {
     }
 
     reset();
+    setLoading(false);
   }
   return (
     <form
